@@ -17,6 +17,6 @@ export default defineComponent({
 </script>
 <style lang="scss">
 .test-style {
-  color: $text-color;
+  color: $primary-color;
 }
 </style>
