@@ -2,6 +2,8 @@
   <div class="app">
     <div class="app-container">
       <input-demo />
+      <br>
+      <ft-input></ft-input>
     </div>
   </div>
 </template>
