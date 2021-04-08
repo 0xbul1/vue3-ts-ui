@@ -8,6 +8,12 @@ export default defineComponent ({
     modelValue: {
       type: String,
       default: '',
+    },
+    type: {
+      validator: (value: string) => {
+        return ['text', 'number', 'tel', 'textarea', 'time'].includes(value);
+      },
+      default: 'text',
     }
   },
   emits: ['update:modelValue'],
@@ -27,7 +33,7 @@ export default defineComponent ({
           <input
             placeholder={attrs.placeholder as string}
             class='ft-field'
-            type="text"
+            type={props.type}
             onInput={onInput}
             value={props.modelValue}
           />
