@@ -1,6 +1,11 @@
 <template>
   <div class="demo-box">
-    <ft-form-item />
+    <ft-form-item label="姓名">
+      <template #label>
+        <b>customLabel</b>
+      </template>
+      <ft-input placeholder="请输入姓名" />
+    </ft-form-item>
   </div>
 </template>
 

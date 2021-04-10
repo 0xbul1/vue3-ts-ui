@@ -1,20 +1,29 @@
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import './index.scss';
 
 export default defineComponent({
   name: 'FtFormItem',
-  setup(props, { emit }) {
+  props:{
+    label:{
+      type: String,
+      default: '',
+    }
+  },
+  setup(props, { emit, slots }) {
+    const errMsg = ref('');
+    const renderLabel = () => {
+        return slots.label? slots.label() : <label class='item-label'>{ props.label }</label>
+    };
     return () => {
       return (
         <div class='fr-form-item'>
-          <label class='item-label'>
-            name:
-          </label>
           <div class='item-content'>
             <div class='item-content-wrap'>
-            <ftInput type='text'/>
+            { slots.default!() }
             </div>
-            <p class='item-error'>请输入姓名</p>
+            <p class='item-error' v-show={errMsg.value}>
+              {errMsg.value}
+            </p>
           </div>
         </div>
       )
