@@ -1,6 +1,6 @@
 <template>
   <div class="demo-box">
-    <ft-form-item label="111">
+    <ft-form-item>
       <template #label>
         <b>customLabel</b>
       </template>
