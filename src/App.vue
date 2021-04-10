@@ -1,22 +1,21 @@
 <template>
   <div class="app">
     <div class="app-container">
-      <input-demo />
-      <br>
-      <ft-input></ft-input>
+      <!-- <input-demo /> -->
+      <form-demo />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import InputDemo from './components/input/demo.vue';
-
+// import InputDemo from './components/input/demo.vue';
+import FormDemo from './components/form/demo.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    InputDemo,
+    FormDemo,
   },
 });
 </script>
