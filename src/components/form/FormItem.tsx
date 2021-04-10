@@ -16,7 +16,8 @@ export default defineComponent({
     };
     return () => {
       return (
-        <div class='fr-form-item'>
+        <div class='ft-form-item'>
+          { renderLabel() }
           <div class='item-content'>
             <div class='item-content-wrap'>
             { slots.default!() }
