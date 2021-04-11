@@ -1,4 +1,5 @@
-import { defineComponent } from 'vue';
+import { defineComponent, inject } from 'vue';
+import { FORMITEMCONTEXT, FORMITEMKEY } from '../form/types';
 import './index.scss';
 
 export default defineComponent ({
@@ -21,11 +22,16 @@ export default defineComponent ({
     console.log(attrs, 'attrs');
     console.log(attrs.readonly, 'attrs');
     console.log(typeof attrs.readonly, 'attrs');
+    const formItemContext = inject<FORMITEMCONTEXT>(FORMITEMKEY);
     const onInput = (event: Event) => {
       const value = (event.target as HTMLInputElement).value;
       if (value !== props.modelValue) {
         emit('update:modelValue', value);
+        formItemContext?.handlerControlChange(value);
       }
+    }
+    const onBlur = () => {
+      formItemContext?.handlerControlBlur(props.modelValue);
     }
     return () => {
       return(
@@ -35,6 +41,7 @@ export default defineComponent ({
             class='ft-field'
             type={props.type}
             onInput={onInput}
+            onBlur={onBlur}
             value={props.modelValue}
           />
         </div>
