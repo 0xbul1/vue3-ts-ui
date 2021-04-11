@@ -12,7 +12,7 @@ export default defineComponent ({
     },
     type: {
       validator: (value: string) => {
-        return ['text', 'number', 'tel', 'textarea', 'time'].includes(value);
+        return ['text', 'password', 'number', 'tel', 'textarea', 'time'].includes(value);
       },
       default: 'text',
     }
@@ -43,6 +43,7 @@ export default defineComponent ({
             onInput={onInput}
             onBlur={onBlur}
             value={props.modelValue}
+            autocomplete="off"
           />
         </div>
       );
