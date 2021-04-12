@@ -30,10 +30,18 @@ export default defineComponent({
       name: '',
       password: '',
     });
-    const nameRules = ref<FtRuleItem>({
-      required: true,
-      message: '请输入姓名',
-    });
+    const nameRules = ref<FtRuleItem | FtRuleItem[]>([
+      {
+        required: true,
+        message: '请输入姓名',
+        trigger: 'change',
+      },
+      {
+        max: 6,
+        message: '不超过6位',
+        trigger: 'blur',
+      },
+    ]);
     // text.value = 222;
     return {
       text,

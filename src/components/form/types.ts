@@ -7,12 +7,15 @@ interface FORMITEMCONTEXT {
   handlerControlBlur(value: string): void;
 }
 
+type ValidTrigger = 'change' | 'blur';
+
 interface FtRuleItem extends RuleItem {
-  trigger?: 'change' | 'blur';
+  trigger?: ValidTrigger;
 }
 
 export {
   FORMITEMKEY,
   FORMITEMCONTEXT,
-  FtRuleItem
+  FtRuleItem,
+  ValidTrigger,
 }

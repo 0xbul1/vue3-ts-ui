@@ -1,7 +1,7 @@
-import Schema, { RuleItem } from 'async-validator';
+import Schema from 'async-validator';
 import { defineComponent, PropType, provide, ref, computed } from 'vue';
 import './index.scss';
-import { FORMITEMKEY, FtRuleItem } from './types';
+import { FORMITEMKEY, FtRuleItem , ValidTrigger} from './types';
 
 export default defineComponent({
   name: 'FtFormItem',
@@ -14,16 +14,24 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    rules: [Object, Array] as PropType<RuleItem | RuleItem[]>
+    rules: {
+      type: [Object, Array] as PropType<FtRuleItem | FtRuleItem[]>,
+      default: () => ({})
+    }
   },
   setup(props, { emit, slots }) {
     const errMsg = ref('');
-    const getRules = ():FtRuleItem |FtRuleItem[] | undefined => {
-      return props.rules;
+    const getRules = (trigger: ValidTrigger):FtRuleItem[] => {
+      const rules = props.rules;
+      const ruleArr = Array.isArray(rules) ? rules : [rules];
+      return ruleArr.filter(item => {
+        const itemTrigger = item?.trigger || 'change';
+        return itemTrigger === trigger;
+      });;
     }
-    const validTrigger = computed(() => getRules()?.trigger || 'change');
-    const validate = (value: string):Promise<any> => {
-      const rules = getRules();
+    // const validTrigger = computed(() => getRules()?.trigger || 'change');
+    const validate = (value: string, rules: FtRuleItem[]):Promise<any> => {
+      // const rules = getRules();
       if(rules && props.prop) {
         const schema = new Schema({[props.prop]: rules});
         return schema.validate({[props.prop]: value}).then(() => {
@@ -31,16 +39,24 @@ export default defineComponent({
           return true;
         }).catch(({ errors }) => {
           errMsg.value = errors[0].message;
-          return errors;
+          return Promise.reject(errors);
         })
       }
       return Promise.resolve(true);
     }
     const handlerControlChange = (value: string) => {
-      validate(value);
+      const trueRules = getRules('change');
+      if(trueRules.length) {
+        validate(value, trueRules);
+      }
     }
     const handlerControlBlur = (value: string) => {
-      validate(value);
+      const trueRules = getRules('blur');
+      if(trueRules.length) {
+        validate(value, trueRules).catch(error => {
+          console.error(error);
+        });
+      }
     }
     provide(FORMITEMKEY, {
       handlerControlChange,

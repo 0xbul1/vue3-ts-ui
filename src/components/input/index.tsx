@@ -43,8 +43,9 @@ export default defineComponent ({
             onInput={onInput}
             onBlur={onBlur}
             value={props.modelValue}
-            autocomplete="off"
+            autocomplete="new-password"
           />
+          {/* autocomplete填充的是上次提交的、内容，说明内容是通过校验的，这里加上只是为了测试 */}
         </div>
       );
     }
