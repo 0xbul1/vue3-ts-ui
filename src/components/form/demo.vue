@@ -1,21 +1,23 @@
 <template>
   <div class="demo-box">
-    <ft-form-item label="姓名" prop="name" :rules="nameRules">
-      <!-- <template #label>
+    <ft-form :model="formValues" :rules="formRules">
+      <ft-form-item label="姓名" prop="name" :rules="nameRules">
+        <!-- <template #label>
         <b>customLabel</b>
       </template> -->
-      <ft-input placeholder="请输入XXX" v-model="formValues.name" />
-    </ft-form-item>
-    <ft-form-item label="密码" prop="password">
-      <!-- <template #label>
+        <ft-input placeholder="请输入XXX" v-model="formValues.name" />
+      </ft-form-item>
+      <ft-form-item label="密码" prop="password">
+        <!-- <template #label>
         <b>customLabel</b>
       </template> -->
-      <ft-input
-        placeholder="请输入XXX"
-        type="password"
-        v-model="formValues.password"
-      />
-    </ft-form-item>
+        <ft-input
+          placeholder="请输入XXX"
+          type="password"
+          v-model="formValues.password"
+        />
+      </ft-form-item>
+    </ft-form>
   </div>
 </template>
 

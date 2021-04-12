@@ -1,9 +1,11 @@
 import { App } from 'vue';
 import Input from  './components/input/index';
+import Form from  './components/form/Form';
 import FormItem from  './components/form/FormItem';
 
 const components = [
     Input,
+    Form,
     FormItem,
 ]
 

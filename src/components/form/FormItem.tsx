@@ -1,7 +1,6 @@
 import Schema from 'async-validator';
-import { defineComponent, PropType, provide, ref, computed } from 'vue';
-import './index.scss';
-import { FORMITEMKEY, FtRuleItem , ValidTrigger} from './types';
+import { defineComponent, PropType, provide, ref, inject } from 'vue';
+import { FORMCONTEXT, FORMITEMCONTEXT, FORMITEMKEY, FORMKEY, FtRuleItem , ValidTrigger} from './types';
 
 export default defineComponent({
   name: 'FtFormItem',
@@ -16,18 +15,19 @@ export default defineComponent({
     },
     rules: {
       type: [Object, Array] as PropType<FtRuleItem | FtRuleItem[]>,
-      default: () => ({})
+      // default: () => ({})
     }
   },
   setup(props, { emit, slots }) {
     const errMsg = ref('');
+    const parent = inject<FORMCONTEXT>(FORMKEY);
     const getRules = (trigger: ValidTrigger):FtRuleItem[] => {
-      const rules = props.rules;
-      const ruleArr = Array.isArray(rules) ? rules : [rules];
-      return ruleArr.filter(item => {
-        const itemTrigger = item?.trigger || 'change';
-        return itemTrigger === trigger;
-      });;
+      const rules = props.rules || parent?.rules[props.prop];
+      if(rules) {
+        const ruleArr = Array.isArray(rules) ? rules : [rules];
+        return ruleArr.filter(item => item.trigger === trigger);;
+      }
+      return [];
     }
     // const validTrigger = computed(() => getRules()?.trigger || 'change');
     const validate = (value: string, rules: FtRuleItem[]):Promise<any> => {
@@ -58,7 +58,7 @@ export default defineComponent({
         });
       }
     }
-    provide(FORMITEMKEY, {
+    provide<FORMITEMCONTEXT>(FORMITEMKEY, {
       handlerControlChange,
       handlerControlBlur,
     });
