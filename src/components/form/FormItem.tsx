@@ -1,4 +1,4 @@
-import Schema from 'async-validator';
+import Schema, { ErrorList } from 'async-validator';
 import { defineComponent, PropType, provide, ref, inject } from 'vue';
 import { FORMCONTEXT, FORMITEMCONTEXT, FORMITEMKEY, FORMKEY, FtRuleItem , ValidTrigger} from './types';
 
@@ -30,7 +30,7 @@ export default defineComponent({
       return [];
     }
     // const validTrigger = computed(() => getRules()?.trigger || 'change');
-    const validate = (value: string, rules: FtRuleItem[]):Promise<any> => {
+    const validate = (value: string, rules: FtRuleItem[]):Promise<boolean | ErrorList> => {
       // const rules = getRules();
       if(rules && props.prop) {
         const schema = new Schema({[props.prop]: rules});

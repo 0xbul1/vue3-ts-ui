@@ -19,9 +19,9 @@ export default defineComponent ({
   },
   emits: ['update:modelValue'],
   setup(props, {emit, attrs}) {
-    console.log(attrs, 'attrs');
-    console.log(attrs.readonly, 'attrs');
-    console.log(typeof attrs.readonly, 'attrs');
+    // console.log(attrs, 'attrs');
+    // console.log(attrs.readonly, 'attrs');
+    // console.log(typeof attrs.readonly, 'attrs');
     const formItemContext = inject<FORMITEMCONTEXT>(FORMITEMKEY);
     const onInput = (event: Event) => {
       const value = (event.target as HTMLInputElement).value;

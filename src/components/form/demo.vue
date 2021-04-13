@@ -1,6 +1,6 @@
 <template>
   <div class="demo-box">
-    <ft-form :model="formValues" :rules="formRules">
+    <ft-form :model="formValues" :rules="formRules" ref="FtForm">
       <ft-form-item label="姓名" prop="name" :rules="nameRules">
         <!-- <template #label>
         <b>customLabel</b>
@@ -17,13 +17,16 @@
           v-model="formValues.password"
         />
       </ft-form-item>
+      <ft-form-item>
+        <button @click="submit">提交按钮</button>
+      </ft-form-item>
     </ft-form>
   </div>
 </template>
 
 <script lang="tsx">
 import { defineComponent, reactive, ref } from 'vue';
-import { FtRuleItem } from './types';
+import { FORMCONTEXT, FtRuleItem } from './types';
 export default defineComponent({
   name: 'FormDemo',
   setup(props, { emit }) {
@@ -47,11 +50,19 @@ export default defineComponent({
       ],
       password: { min: 6, message: '最少6位', trigger: 'blur' },
     });
-    // text.value = 222;
+    const FtForm = ref<FORMCONTEXT | null>(null);
+    const submit = () => {
+      console.log(FtForm, 'FtForm');
+      FtForm.value!.validate((valid) => {
+        console.log('demo', valid);
+      });
+    };
     return {
       text,
       formValues,
       formRules,
+      submit,
+      FtForm,
     };
   },
 });

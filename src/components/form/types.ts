@@ -1,11 +1,14 @@
-import { RuleItem } from 'async-validator';
+import { ErrorList, RuleItem } from 'async-validator';
 
 const FORMKEY = 'formKey';
 const FORMITEMKEY = 'formItemKey';
 
+type validateCb = (callback: (valid: boolean) => void) => Promise<boolean | ErrorList>
+
 interface FORMCONTEXT {
   model: Record<string, any>;
   rules: FtFormRules,
+  validate: validateCb;
 }
 
 interface FORMITEMCONTEXT {
@@ -31,4 +34,5 @@ export {
   FtRuleItem,
   ValidTrigger,
   FtFormRules,
+  validateCb,
 }
