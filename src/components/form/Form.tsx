@@ -13,6 +13,7 @@ export default defineComponent({
     },
     rules: Object as PropType<FtFormRules>
   },
+  emits: ['validate'],
   setup(props, {emit, slots}) {
     // const instance = getCurrentInstance();
     // console.log('instance', instance);
@@ -53,20 +54,33 @@ export default defineComponent({
         if(callback) {
           callback(true);
         }
+        emit('validate', true);
         return Promise.resolve(true);
       }).catch(errors => {
         if(callback) {
           callback(false)
         }
+        emit('validate', errors);
         return Promise.reject(errors);
       })
     }
     useExpose<{validate: validateCb}>({ validate });
+    // return () => {
+    //   return (
+    //     <div class="ft-form">
+    //       { slots.default!() }
+    //     </div>
+    //   )
+    // }
+    const onSubmit = (event: Event) => {
+      event.preventDefault();
+      validate();
+    }
     return () => {
       return (
-        <div class="ft-form">
+        <form class="ft-form" onSubmit={ onSubmit }>
           { slots.default!() }
-        </div>
+        </form>
       )
     }
   },

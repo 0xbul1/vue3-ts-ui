@@ -1,6 +1,11 @@
 <template>
   <div class="demo-box">
-    <ft-form :model="formValues" :rules="formRules" ref="FtForm">
+    <ft-form
+      :model="formValues"
+      :rules="formRules"
+      ref="FtForm"
+      @validate="handleValidate"
+    >
       <ft-form-item label="姓名" prop="name" :rules="nameRules">
         <!-- <template #label>
         <b>customLabel</b>
@@ -18,13 +23,14 @@
         />
       </ft-form-item>
       <ft-form-item>
-        <button @click="submit">提交按钮</button>
+        <button type="submit">提交按钮</button>
       </ft-form-item>
     </ft-form>
   </div>
 </template>
 
 <script lang="tsx">
+import { ErrorList } from 'async-validator';
 import { defineComponent, reactive, ref } from 'vue';
 import { FORMCONTEXT, FtRuleItem } from './types';
 export default defineComponent({
@@ -59,10 +65,13 @@ export default defineComponent({
     });
     const FtForm = ref<FORMCONTEXT | null>(null);
     const submit = () => {
-      console.log(FtForm, 'FtForm');
-      FtForm.value!.validate((valid) => {
-        console.log('demo', valid);
-      });
+      // console.log(FtForm, 'FtForm');
+      // FtForm.value!.validate((valid) => {
+      //   console.log('demo', valid);
+      // });
+    };
+    const handleValidate = (valid: boolean | ErrorList) => {
+      console.log('handleValidate', valid);
     };
     return {
       text,
@@ -70,6 +79,7 @@ export default defineComponent({
       formRules,
       submit,
       FtForm,
+      handleValidate,
     };
   },
 });
