@@ -7,11 +7,16 @@ type validateCb = (callback: (valid: boolean) => void) => Promise<boolean | Erro
 
 interface FORMCONTEXT {
   model: Record<string, any>;
-  rules: FtFormRules,
+  rules: FtFormRules;
   validate: validateCb;
+  addItem(item: Partial<FORMITEMCONTEXT>): void;
+  removeItem(id: string): void;
 }
 
 interface FORMITEMCONTEXT {
+  id: string;
+  prop: string;
+  validate: (value: string) => Promise<boolean | ErrorList>;
   handlerControlChange(value: string): void;
   handlerControlBlur(value: string): void;
 }

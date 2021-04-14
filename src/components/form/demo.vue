@@ -48,7 +48,14 @@ export default defineComponent({
           trigger: 'blur',
         },
       ],
-      password: { min: 6, message: '最少6位', trigger: 'blur' },
+      password: [
+        {
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur',
+        },
+        { min: 6, message: '最少6位', trigger: 'blur' },
+      ],
     });
     const FtForm = ref<FORMCONTEXT | null>(null);
     const submit = () => {

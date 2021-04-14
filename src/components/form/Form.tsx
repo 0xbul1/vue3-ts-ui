@@ -1,5 +1,5 @@
 import { defineComponent, PropType, provide } from 'vue';
-import { FORMCONTEXT, FORMKEY, FtFormRules, validateCb } from './types';
+import { FORMCONTEXT, FORMITEMCONTEXT, FORMKEY, FtFormRules, validateCb } from './types';
 import './index.scss';
 import { useExpose } from '@/uses';
 import { ErrorList } from 'async-validator';
@@ -7,14 +7,17 @@ import { ErrorList } from 'async-validator';
 export default defineComponent({
   name: 'FtForm',
   props :{
-    model: Object,
+    model: {
+      type: Object,
+      required: true,
+    },
     rules: Object as PropType<FtFormRules>
   },
   setup(props, {emit, slots}) {
-    provide<Partial<FORMCONTEXT>>(FORMKEY, {
-      model: props.model,
-      rules: props.rules,
-    })
+    // const instance = getCurrentInstance();
+    // console.log('instance', instance);
+    // console.log('default', slots.default!());
+  
     // const instance = getCurrentInstance();
     // console.log(instance);
     // if (instance) {
@@ -22,12 +25,41 @@ export default defineComponent({
     //     validate:() => {}
     //   })
     // }
-    const validate = (callback?: (valid: boolean) => void): Promise<boolean | ErrorList> => {
-      console.log('form-valid');
-      if(callback) {
-        callback(true);
+    const formItems : FORMITEMCONTEXT[] = [];
+    const addItem = (item: FORMITEMCONTEXT) => {
+      formItems.push(item);
+      console.log(formItems, 'formItems');
+    }
+    const removeItem = (id: string) => {
+      if(formItems.length) {
+        const index = formItems.findIndex(item => item.id === id);
+        if(index > -1) {
+          formItems.splice(index);
+        }
       }
-      return Promise.resolve(true);
+    }
+    provide<Partial<FORMCONTEXT>>(FORMKEY, {
+      model: props.model,
+      rules: props.rules,
+      addItem,
+      removeItem,
+    })
+    const validate = (callback?: (valid: boolean) => void): Promise<boolean | ErrorList> => {
+      return Promise.all(
+        formItems
+        .filter(item => item.prop)
+        .map(item => item.validate(props.model[item.prop]))
+      ).then(() => {
+        if(callback) {
+          callback(true);
+        }
+        return Promise.resolve(true);
+      }).catch(errors => {
+        if(callback) {
+          callback(false)
+        }
+        return Promise.reject(errors);
+      })
     }
     useExpose<{validate: validateCb}>({ validate });
     return () => {
