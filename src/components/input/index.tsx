@@ -14,7 +14,7 @@ export default defineComponent ({
       validator: (value: string) => {
         return ['text', 'password', 'number', 'tel', 'textarea', 'time'].includes(value);
       },
-      default: 'text',
+      default: 'text:',
     }
   },
   emits: ['update:modelValue'],
