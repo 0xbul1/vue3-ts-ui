@@ -1,12 +1,19 @@
-import { defineComponent, provide, ref, onMounted } from 'vue';
+import { defineComponent, provide, ref, onMounted, watch } from 'vue';
 import './index.scss'
 import {TabContext, TabPaneContext, TabsKey} from "@/components/tabs/types";
 
 export default defineComponent({
     name: 'FtTabs',
+    props: {
+        modelValue: {
+            type: String,
+            default: '',
+        },
+    },
+    emits: ['update:modelValue'],
     setup(props, {emit, slots}) {
         const panels = ref<TabPaneContext[]>([]);
-        const currentTabName = ref('banana');
+        const currentTabName = ref(props.modelValue);
         const addPane = (pane: TabPaneContext) => {
             panels.value.push(pane);
         }
@@ -27,9 +34,13 @@ export default defineComponent({
         }
         onMounted(() => {
             if(!currentTabName.value && panels.value.length) {
-                currentTabName.value = panels.value[0].name;
+                // currentTabName.value = panels.value[0].name;
+                emit('update:modelValue', panels.value[0].name);
             }
             updatePaneVisible();
+        })
+        watch(() => props.modelValue, newVal => {
+            currentTabName.value = newVal;
         })
         provide<TabContext>(TabsKey, {
             addPane,
