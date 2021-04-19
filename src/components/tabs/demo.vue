@@ -1,9 +1,9 @@
 <template>
   <div class="demo-box">
     <ft-tabs v-model="currentTabName">
-      <ft-tab-pane name="apple">apple</ft-tab-pane>
-      <ft-tab-pane name="banana">banana</ft-tab-pane>
-      <ft-tab-pane name="orange">orange</ft-tab-pane>
+      <ft-tab-pane name="tabOne">tabOne</ft-tab-pane>
+      <ft-tab-pane name="tabTwo">tabTwo</ft-tab-pane>
+      <ft-tab-pane name="tabThree">tabThree</ft-tab-pane>
     </ft-tabs>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default defineComponent({
     FtTabs,
   },
   setup(props, { emit }) {
-    const currentTabName = ref('orange');
+    const currentTabName = ref('');
     // text.value = 222;
     return {
       currentTabName,

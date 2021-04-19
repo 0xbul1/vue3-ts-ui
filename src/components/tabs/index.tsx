@@ -37,6 +37,7 @@ export default defineComponent({
                 // currentTabName.value = panels.value[0].name;
                 emit('update:modelValue', panels.value[0].name);
             }
+            // 在mounted里面update，才能保证panels存在
             updatePaneVisible();
         })
         watch(() => props.modelValue, newVal => {
@@ -46,10 +47,15 @@ export default defineComponent({
             addPane,
             removePane,
         })
+        const tabClick = (name: string) => {
+            if(name !== currentTabName.value) {
+                emit('update:modelValue', name);
+            }
+        }
         const renderNavs = () => {
             return panels.value.map(item => {
                 const extraClass = item.name === currentTabName.value ? 'active' : '';
-                return <div class={"ft-tab-pane " + extraClass}>{item.name}</div>
+                return <div class={"ft-tab-pane " + extraClass} onClick={tabClick.bind(null, item.name)}>{item.name}</div>
             })
         }
         return () => {
