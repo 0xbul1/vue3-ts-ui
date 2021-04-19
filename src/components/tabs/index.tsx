@@ -1,4 +1,4 @@
-import { defineComponent, provide, ref } from 'vue';
+import { defineComponent, provide, ref, onMounted } from 'vue';
 import './index.scss'
 import {TabContext, TabPaneContext, TabsKey} from "@/components/tabs/types";
 
@@ -6,25 +6,39 @@ export default defineComponent({
     name: 'FtTabs',
     setup(props, {emit, slots}) {
         const panels = ref<TabPaneContext[]>([]);
+        const currentTabName = ref('banana');
         const addPane = (pane: TabPaneContext) => {
             panels.value.push(pane);
         }
         const removePane = (name: string) => {
             if(panels.value.length){
                 const index = panels.value.findIndex(item => item.name === name);
-                if (index> -1) {
+                if (index > -1) {
                     panels.value.splice(index, 1);
                 }
             }
         }
+        const updatePaneVisible = () => {
+            if(panels.value.length) {
+                panels.value.forEach(item => {
+                    item.changeShow(item.name === currentTabName.value);
+                })
+            }
+        }
+        onMounted(() => {
+            if(!currentTabName.value && panels.value.length) {
+                currentTabName.value = panels.value[0].name;
+            }
+            updatePaneVisible();
+        })
         provide<TabContext>(TabsKey, {
             addPane,
             removePane,
         })
         const renderNavs = () => {
-            console.log(panels, 'panels');
             return panels.value.map(item => {
-                return <div class="ft-tab-pane">{item.name}</div>
+                const extraClass = item.name === currentTabName.value ? 'active' : '';
+                return <div class={"ft-tab-pane " + extraClass}>{item.name}</div>
             })
         }
         return () => {

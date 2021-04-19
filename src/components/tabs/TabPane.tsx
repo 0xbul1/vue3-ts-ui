@@ -1,4 +1,4 @@
-import { defineComponent, inject, onMounted, onBeforeUnmount } from 'vue';
+import { defineComponent, inject, onMounted, onBeforeUnmount, ref } from 'vue';
 import {TabContext, TabsKey} from "@/components/tabs/types";
 
 export default defineComponent({
@@ -11,9 +11,14 @@ export default defineComponent({
     },
     setup(props,{emit, slots}) {
         const parent = inject<TabContext>(TabsKey);
+        const show = ref(false);
+        const changeShow = (visible: boolean) => {
+            show.value = visible;
+        }
         onMounted(()=> {
             parent?.addPane({
                 name: props.name,
+                changeShow,
             })
         }),
         onBeforeUnmount(() => {
@@ -21,7 +26,7 @@ export default defineComponent({
         })
         return ()=> {
             return (
-                <div class="pane">
+                <div class="pane" v-show={show.value} >
                     { slots.default!() }
                 </div>
             )
