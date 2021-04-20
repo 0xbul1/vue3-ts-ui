@@ -3,7 +3,7 @@
     <ft-tabs v-model="currentTabName">
       <ft-tab-pane name="apple">
         <template #tabTitle="name">
-          <b>{{ name }}</b>
+          <b style="color: red">{{ name }}</b>
         </template>
         apple
       </ft-tab-pane>
