@@ -56,7 +56,9 @@ export default defineComponent({
         const renderNavs = () => {
             return panels.value.map(item => {
                 const extraClass = item.name === currentTabName.value ? 'active' : '';
-                return <div class={"ft-tab-pane " + extraClass} onClick={tabClick.bind(null, item.name)}>{item.name}</div>
+                return <div class={"ft-tab-pane " + extraClass} onClick={tabClick.bind(null, item.name)}>
+                    {item.tabTitleSlot ? item.tabTitleSlot(item.name) : item.name}
+                </div>
             })
         }
         return () => {

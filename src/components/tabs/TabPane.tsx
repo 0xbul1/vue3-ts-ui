@@ -18,6 +18,7 @@ export default defineComponent({
         onMounted(()=> {
             parent?.addPane({
                 name: props.name,
+                tabTitleSlot: slots.tabTitle,
                 changeShow,
             })
         }),
