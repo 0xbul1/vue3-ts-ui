@@ -42,6 +42,7 @@ export default defineComponent({
         })
         watch(() => props.modelValue, newVal => {
             currentTabName.value = newVal;
+            updatePaneVisible();
         })
         provide<TabContext>(TabsKey, {
             addPane,
