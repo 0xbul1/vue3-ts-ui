@@ -1,7 +1,12 @@
 <template>
   <div class="demo-box">
     <ft-tabs v-model="currentTabName">
-      <ft-tab-pane name="tabOne">tabOne</ft-tab-pane>
+      <ft-tab-pane name="apple">
+        <template #tabTitle="name">
+          <b style="color: red">{{ name }}</b>
+        </template>
+        apple
+      </ft-tab-pane>
       <ft-tab-pane name="tabTwo">tabTwo</ft-tab-pane>
       <ft-tab-pane name="tabThree">tabThree</ft-tab-pane>
     </ft-tabs>
